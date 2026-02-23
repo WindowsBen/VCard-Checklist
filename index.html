@@ -6,34 +6,31 @@
     <title>Card Opening Tracker</title>
     <style>
         :root {
-            --totless-color: #7714b9;
-            --soul-color: #3d86f5;
-            --bg: #686868;
+            --totless-color: #821aa1;
+            --soul-color: #2a87dd;
+            --bg: #f8fafc;
         }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); padding: 20px; color: #1e293b; }
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        h1 { text-align: center; margin-bottom: 5px; }
-        p.subtitle { text-align: center; color: #64748b; margin-bottom: 25px; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); padding: 10px; color: #1e293b; }
+        .container { max-width: 1100px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        h1 { text-align: center; margin-bottom: 5px; font-size: 1.5rem; }
+        p.subtitle { text-align: center; color: #64748b; margin-bottom: 20px; font-size: 0.9rem; }
         
-        table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
-        th { padding: 12px; text-align: center; color: white; border: 1px solid #ffffff33; }
+        table { width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden; font-size: 0.85rem; }
+        th { padding: 8px; text-align: center; color: white; border: 1px solid #ffffff33; }
         
-        /* Header Colors */
         .header-main { background-color: #334155; }
         .header-totless { background-color: var(--totless-color); }
         .header-soul { background-color: var(--soul-color); }
         
-        /* Cell Styles */
-        td { padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: center; border-right: 1px solid #f1f5f9; }
-        .name-col { text-align: left; font-weight: bold; width: 20%; padding-left: 15px; background: #fdfdfd; }
+        td { padding: 8px 4px; border-bottom: 1px solid #e2e8f0; text-align: center; border-right: 1px solid #f1f5f9; }
+        .name-col { text-align: left; font-weight: bold; width: 18%; padding-left: 10px; background: #fdfdfd; position: sticky; left: 0; z-index: 5; border-right: 2px solid #e2e8f0; }
         
-        /* Tinted Columns to distinguish users */
-        .totless-cell { background-color: #fcf0ff; }
-        .soul-cell { background-color: #f5feff; }
+        .totless-cell { background-color: #faf0ff; }
+        .soul-cell { background-color: #f5fdff; }
 
         tr:hover td { background-color: #f1f5f9 !important; }
 
-        input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; vertical-align: middle; }
+        input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; vertical-align: middle; }
         .totless-cell input { accent-color: var(--totless-color); }
         .soul-cell input { accent-color: var(--soul-color); }
 
@@ -44,22 +41,26 @@
 
 <div class="container">
     <h1>Card Opening Tracker</h1>
-    <p class="subtitle">Tracking progress for Totless and Soul</p>
+    <p class="subtitle">Tracking 8, 9, 10, Mascot, and SR</p>
 
     <table>
         <thead class="sticky-header">
             <tr class="header-main">
-                <th rowspan="2" class="name-col" style="color: white;">Name</th>
-                <th colspan="3" class="header-totless">TOTLESS</th>
-                <th colspan="3" class="header-soul">SOUL</th>
+                <th rowspan="2" class="name-col" style="color: white; background: #334155;">Name</th>
+                <th colspan="5" class="header-totless">TOTLESS</th>
+                <th colspan="5" class="header-soul">SOUL</th>
             </tr>
             <tr class="header-main">
                 <th class="header-totless">8</th>
                 <th class="header-totless">9</th>
+                <th class="header-totless">10</th>
                 <th class="header-totless">M</th>
+                <th class="header-totless">SR</th>
                 <th class="header-soul">8</th>
                 <th class="header-soul">9</th>
+                <th class="header-soul">10</th>
                 <th class="header-soul">M</th>
+                <th class="header-soul">SR</th>
             </tr>
         </thead>
         <tbody id="checklist-body">
@@ -86,10 +87,14 @@
             <td class="name-col">${name}</td>
             <td class="totless-cell"><input type="checkbox" id="t8-${index}" onchange="save()"></td>
             <td class="totless-cell"><input type="checkbox" id="t9-${index}" onchange="save()"></td>
+            <td class="totless-cell"><input type="checkbox" id="t10-${index}" onchange="save()"></td>
             <td class="totless-cell"><input type="checkbox" id="tm-${index}" onchange="save()"></td>
+            <td class="totless-cell"><input type="checkbox" id="tsr-${index}" onchange="save()"></td>
             <td class="soul-cell"><input type="checkbox" id="s8-${index}" onchange="save()"></td>
             <td class="soul-cell"><input type="checkbox" id="s9-${index}" onchange="save()"></td>
+            <td class="soul-cell"><input type="checkbox" id="s10-${index}" onchange="save()"></td>
             <td class="soul-cell"><input type="checkbox" id="sm-${index}" onchange="save()"></td>
+            <td class="soul-cell"><input type="checkbox" id="ssr-${index}" onchange="save()"></td>
         `;
         tableBody.appendChild(row);
     });
@@ -97,14 +102,17 @@
     function save() {
         const checks = document.querySelectorAll('input[type="checkbox"]');
         const data = Array.from(checks).map(c => c.checked);
-        localStorage.setItem('cardTrackerData', JSON.stringify(data));
+        localStorage.setItem('cardTrackerDataV2', JSON.stringify(data));
     }
 
     function load() {
-        const data = JSON.parse(localStorage.getItem('cardTrackerData'));
+        const data = JSON.parse(localStorage.getItem('cardTrackerDataV2'));
         if (data) {
             const checks = document.querySelectorAll('input[type="checkbox"]');
-            checks.forEach((c, i) => c.checked = data[i]);
+            // Ensure we don't break if the number of checkboxes changed from a previous version
+            checks.forEach((c, i) => {
+                if (data[i] !== undefined) c.checked = data[i];
+            });
         }
     }
 
