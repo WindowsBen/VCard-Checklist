@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Checklist</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); color: var(--text); padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        h1 { text-align: center; margin-bottom: 30px; color: #334155; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background-color: var(--primary); color: white; padding: 15px; position: sticky; top: 0; }
+        td { padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: center; }
+        .name-col { text-align: left; font-weight: 600; width: 40%; padding-left: 20px; }
+        tr:hover { background-color: #f1f5f9; }
+        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+        .footer-note { text-align: center; margin-top: 20px; font-size: 0.8rem; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Participation Tracker</h1>
+    <table>
+        <thead>
+            <tr>
+                <th class="name-col">Name</th>
+                <th>8</th>
+                <th>9</th>
+                <th>Mascott</th>
+            </tr>
+        </thead>
+        <tbody id="checklist-body">
+            </tbody>
+    </table>
+    <p class="footer-note">Progress is saved automatically in your browser.</p>
+</div>
+
+<script>
+    const names = [
+        "Cotton", "Kokonuts", "Jowol", "Saruei", "CyYu", "Obkatie", "Sansin", "Vienna", 
+        "Fream", "Egg", "ChaCha", "Silver", "Hannah", "Shylily", "DyaRikku", "Suko", 
+        "Laimu", "Squchan", "Vei", "Toma", "Poseidon", "Totless", "Vex", "Buffpup", 
+        "Rainhoe", "Trickywi", "Candii", "Elly", "Spite", "Shoto", "Amalee", "Ikumi", 
+        "Yenko", "Bao", "Ari", "Lucy", "Yoclesh", "Froggy", "Doki", "Nano", "Yuzu", 
+        "Juniper", "Ein", "Camila", "Deme", "Sky", "Aethel", "Fefe", "Milky", "Numi", 
+        "Heavenly", "Onikanzei", "Nyanners", "[Name 54]", "[Name 55]"
+    ];
+
+    const tableBody = document.getElementById('checklist-body');
+
+    // Create rows
+    names.forEach((name, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="name-col">${name}</td>
+            <td><input type="checkbox" id="check-8-${index}" onchange="saveState()"></td>
+            <td><input type="checkbox" id="check-9-${index}" onchange="saveState()"></td>
+            <td><input type="checkbox" id="check-m-${index}" onchange="saveState()"></td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    // Save data to browser memory
+    function saveState() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const state = Array.from(checkboxes).map(cb => cb.checked);
+        localStorage.setItem('checklistState', JSON.stringify(state));
+    }
+
+    // Load data from browser memory
+    function loadState() {
+        const state = JSON.parse(localStorage.getItem('checklistState'));
+        if (state) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach((cb, index) => {
+                cb.checked = state[index];
+            });
+        }
+    }
+
+    window.onload = loadState;
+</script>
+
+</body>
+</html>
